@@ -1,2 +1,67 @@
 ---
 # defaults file for ansible-role-kvm
+
+ansible_user: "ansible"
+
+# Defines users to add to libvirt group
+kvm_users: []
+
+# Define KVM Networks to create
+kvm_networks: []
+  # - name: ovs-network
+  #   mode: bridge
+  #   bridge_name: ovsbr0
+  #   autostart: true
+  #   state: active # active, inactive, present and absent
+  #   virtualport_type: openvswitch
+  #   vlans:
+  #     - name: vlan-101
+  #       trunk: false
+  #       vlan: 101
+  #     - name: vlan-102
+  #       trunk: false
+  #       vlan: 102
+  #     - name: vlan-201
+  #       trunk: false
+  #       vlan: 201
+  #     - name: vlan-all
+  #       trunk: true
+  #       vlan:
+  #         - 101
+  #         - 102
+  #         - 201
+
+kvm_storage_pools: []
+  # - name: images
+  #   path: /var/lib/libvirt/images
+  #   autostart: true
+  #   state: active
+
+kvm_vms: []
+  # - name: test_vm
+  #   autostart: true
+  #   boot_devices: # Define boot devices in order of preference
+  #     - network
+  #     - hd
+  #     # - cdrom
+  #   cdrom:
+  #     source: /path/to/iso
+  #   graphics: false
+  #   disks:
+  #     - disk_driver: virtio # ide, scsi, virtio, xen, usb, sata or sd
+  #       name: test_vm.1
+  #       size: 36864 # Define disks in MB
+  #     - disk_driver: virtio
+  #       name: test_vm.2
+  #       size: 51200 # Define disks in MB
+  #   memory: 512
+  #   network_interfaces:
+  #     - source: default
+  #       network_driver: virtio
+  #       portgroup: vlan-102
+  #       type: network
+  #     # - source: vmbr102
+  #     #   network_driver: virtio
+  #     #   type: bridge
+  #   state: running
+  #   vcpu: 1

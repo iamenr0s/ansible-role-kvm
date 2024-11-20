@@ -1,2 +1,77 @@
 ---
 # tasks file for ansible-role-kvm
+
+- name: Set facts for KVM service name and packages to install
+  ansible.builtin.include_tasks:
+    file: 01_set_facts.yml
+  tags: 
+    - set_facts
+
+- name: Validate virtualization hardware extensions
+  ansible.builtin.include_tasks:
+    file: 02_validate_virtualization_hw.yml
+  tags: 
+    - validate
+
+- name: Include config kvm tasks
+  ansible.builtin.include_tasks:
+    file: 03_config_kvm.yml
+  tags: 
+    - config_kvm
+  when: 
+    - kvm_config is defined
+    - kvm_config
+
+- name: Include users
+  ansible.builtin.include_tasks:
+    file: 04_users.yml
+  tags: 
+    - users
+  when:
+    - kvm_users is defined
+    - kvm_users
+
+- name: Include config ssh
+  ansible.builtin.include_tasks:
+    file: 05_config_ssh.yml
+  tags:
+    - config_ssh
+  when:
+    - kvm_allow_root_ssh is defined
+    - kvm_allow_root_ssh
+
+- name: Include config networks
+  ansible.builtin.include_tasks:
+    file: 06_config_networks.yml
+  tags:
+    - config_networks
+  when:
+    - kvm_networks is defined
+    - kvm_networks
+
+- name: Include config storage pools
+  ansible.builtin.include_tasks:
+    file: 07_config_storage_pools.yml
+  tags:
+    - config_storage_pools
+  when:
+    - kvm_storage_pools is defined
+    - kvm_storage_pools
+
+- name: Include config vms
+  ansible.builtin.include_tasks:
+    file: 08_config_vms.yml
+  tags:
+    - config_vms
+  when:
+    - kvm_vms is defined
+    - kvm_vms 
+
+- name: Include kvm sysctl settings
+  ansible.builtin.include_tasks:
+    file: 09_sysctl_settings.yml
+  tags:
+    - sysctl_settings
+  when:
+    - kvm_sysctl_settings is defined
+    - kvm_sysctl_settings

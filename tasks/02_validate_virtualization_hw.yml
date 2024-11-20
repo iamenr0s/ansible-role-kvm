@@ -1,0 +1,10 @@
+---
+
+- name: Validate virtualization hardware extensions
+  ansible.builtin.assert:
+    that:
+      - ansible_processor_vcpus > 1
+      - ansible_processor_vt-x
+      - ansible_processor_v
+    fail_msg: "Virtualization hardware extensions are not available"
+    success_msg: "Virtualization hardware extensions are available"

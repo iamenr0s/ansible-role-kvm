@@ -1,0 +1,75 @@
+---
+
+- name: Set KVM service name when running on EL8 or EL9
+  set_fact:
+    kvm_service_name: "libvirtd"
+  when: ansible_distribution_major_version | int >= 8
+
+- name: Set KVM service name when running on Ubuntu 20.04 and above
+  set_fact:
+    kvm_service_name: "libvirtd"
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version >= "20.04"
+
+- name: Set KVM service name when running on lower version than Ubuntu 20.04
+  set_fact:
+    kvm_service_name: "libvirt-bin"
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "20.04"  
+
+- name: Set KVM service name when running on Fedora/AlmaLinux/RockyLinux
+  set_fact:
+    kvm_service_name: "libvirtd"
+  when: ansible_distribution == "Fedora" or ansible_distribution == "AlmaLinux" or ansible_distribution == "Rocky Linux"
+
+- name: Set packages to install when running on EL8 or EL9
+  set_fact:
+    packages_to_install:
+      - qemu-kvm
+      - libvirt
+      - mkisofs
+      - python3-devel
+      - jq
+      - ipmitool
+      - butane
+      - podman
+  when: ansible_distribution_major_version | int >= 8
+
+- name: Set packages to install when running on Ubuntu 20.04 and above
+  set_fact:
+    packages_to_install:
+      - libvirt-clients
+      - libvirt-daemon-system
+      - qemu-kvm
+      - mkisofs
+      - python3-dev
+      - jq
+      - ipmitool
+      - butane
+      - podman
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version >= "20.04"
+
+- name: Set packages to install when running on lower version than Ubuntu 20.04
+  set_fact:
+    packages_to_install:
+      - qemu-kvm
+      - libvirt-bin
+      - mkisofs
+      - python3-dev
+      - jq
+      - ipmitool
+      - butane
+      - podman
+  when: ansible_distribution == "Ubuntu" and ansible_distribution_version < "20.04" 
+
+- name: Set packages to install when running on Fedora/AlmaLinux/RockyLinux
+  set_fact:
+    packages_to_install:
+      - qemu-kvm
+      - libvirt
+      - mkisofs
+      - python3-devel
+      - jq
+      - ipmitool
+      - butane
+      - podman
+  when: ansible_distribution == "Fedora" or ansible_distribution == "AlmaLinux" or ansible_distribution == "Rocky Linux"
+  

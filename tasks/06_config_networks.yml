@@ -1,0 +1,31 @@
+---
+
+- name: define virtual networks
+  community.libvirt.virt_net:
+    state: defined
+    name: "{{ item.name }}"
+    xml: "{{ lookup('template', 'vm-network.xml.j2') }}"
+  loop: "{{ kvm_networks }}"
+  when:
+    - kvm_networks is defined
+    - kvm_networks
+
+- name: setting state of virtual networks
+  community.libvirt.virt_net:
+    state: "{{ item.state | default('active') }}"
+    name: "{{ item.name }}"
+  loop: "{{ kvm_networks }}"
+  when:
+    - kvm_networks is defined
+    - kvm_networks
+    - item.state is defined
+
+- name: setting autostart of virtual networks
+  community.libvirt.virt_net:
+    autostart: "{{ item.autostart | default(false) }}"
+    name: "{{ item.name }}"
+  loop: "{{ kvm_networks }}"
+  when:
+    - kvm_networks is defined
+    - kvm_networks
+    - item.autostart is defined

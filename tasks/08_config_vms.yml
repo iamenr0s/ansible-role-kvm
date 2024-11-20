@@ -1,0 +1,41 @@
+---
+
+- name: defining virtual machines
+  community.libvirt.virt:
+    state: defined
+    name: "{{ item.name }}"
+    xml: "{{ lookup('template', 'vm-template.xml.j2') }}"
+  loop: "{{ kvm_vms }}"
+  when:
+    - kvm_vms is defined
+    - kvm_vms
+
+- name: creating VM disk(s) using qemu_img module
+  qemu_img:
+    dest: "{{ kvm_images_path }}/{{ item[1]['name'] }}.{{ kvm_images_format_type }}"
+    size: "{{ item[1]['size'] }}"
+    format: "{{ kvm_images_format_type }}"
+  loop: "{{ kvm_vms | subelements('disks') }}"
+  when:
+    - kvm_vms is defined
+    - kvm_vms
+
+- name: setting state of virtual machines
+  community.libvirt.virt:
+    state: "{{ item.state | default('running') }}"
+    name: "{{ item.name }}"
+  loop: "{{ kvm_vms }}"
+  when:
+    - kvm_vms is defined
+    - kvm_vms
+    - item.state is defined 
+
+- name: setting autostart of virtual machines
+  community.libvirt.virt:
+    autostart: "{{ item.autostart | default(false) }}"
+    name: "{{ item.name }}"
+  loop: "{{ kvm_vms }}"
+  when:
+    - kvm_vms is defined
+    - kvm_vms
+    - item.autostart is defined
