@@ -1,6 +1,18 @@
 ---
+role_name_check: 1
+dependency:
+  name: galaxy
+driver:
+  name: libvirt
+  #name: molecule-qemu
 platforms:
-  - name: instance
-    # you might want to add your own variables here based on what provisioning
-    # you are doing like:
-    # image: quay.io/centos/centos:stream8
+  - name: instance-1
+    arch: aarch64
+    cpus: 1
+    image_url: "https://gb.mirrors.cicku.me/fedora/linux/releases/41/Cloud/aarch64/images/Fedora-Cloud-Base-Generic-41-1.4.aarch64.qcow2"
+    memory: "1"
+    network_name: default
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}

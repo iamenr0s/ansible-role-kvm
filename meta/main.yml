@@ -1,8 +1,8 @@
 ---
 
 galaxy_info:
-  role_name: create_vm_with_kvm
-  author: YourName
+  role_name: ansible_role_kvm
+  author: iamenr0s
   description: >
     Ansible role to create and manage virtual machines using QEMU-KVM and libvirt.
     This role creates virtual networks, storage volumes, and virtual machines by looping through a dictionary of configurations.
@@ -21,6 +21,4 @@ galaxy_info:
     - virtual_machine
     - ansible
 
-dependencies:
-  - name: community.libvirt
-  - name: community.general
+dependencies: []
